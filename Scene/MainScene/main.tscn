@@ -1,0 +1,118 @@
+[gd_scene load_steps=15 format=3 uid="uid://dc7wnwstxf01j"]
+
+[ext_resource type="Texture2D" uid="uid://6ixshqtk2ep1" path="res://assets/grass.png" id="1_5cspq"]
+[ext_resource type="Script" path="res://Scene/MainScene/main.gd" id="1_6kdqo"]
+[ext_resource type="PackedScene" uid="uid://pklx6eyqcxjy" path="res://Scene/Player/player.tscn" id="2_o4etp"]
+[ext_resource type="PackedScene" uid="uid://b1ul7ftj6o0ag" path="res://Scene/PowerUps/powerups.tscn" id="3_4x38v"]
+[ext_resource type="PackedScene" uid="uid://diuxidwitugd4" path="res://Scene/Coin/coin.tscn" id="3_rwrsa"]
+[ext_resource type="PackedScene" uid="uid://c6wq1rjrjfyt7" path="res://Scene/HUD/heads_up_display.tscn" id="4_1rp2s"]
+[ext_resource type="PackedScene" uid="uid://cnmseng8gor2t" path="res://Scene/obstacle/eagle.tscn" id="4_vdy5m"]
+[ext_resource type="AudioStream" uid="uid://bjmrrk77pt0qq" path="res://assets/audio/Coin.wav" id="6_0t4qr"]
+[ext_resource type="PackedScene" uid="uid://ltgwgc40bl81" path="res://Scene/main_ost.tscn" id="7_jy27x"]
+[ext_resource type="AudioStream" uid="uid://diccgulantqws" path="res://assets/audio/Hit.wav" id="8_jxnsl"]
+[ext_resource type="AudioStream" uid="uid://xmvubqhoeqx8" path="res://assets/audio/Powerup.wav" id="10_kgbn0"]
+[ext_resource type="PackedScene" uid="uid://cbrgrpldpkwds" path="res://Scene/obstacle/cactus.tscn" id="11_o3q8p"]
+[ext_resource type="Script" path="res://Scene/MainScene/EaglesPath.gd" id="13_bc617"]
+
+[sub_resource type="Curve2D" id="Curve2D_cqgye"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 17, 358, 0, 0, 0, 0, 472, 351)
+}
+point_count = 2
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_6kdqo")
+coin_scene = ExtResource("3_rwrsa")
+powerups_scene = ExtResource("3_4x38v")
+eagle_scene = ExtResource("4_vdy5m")
+playtime = 20
+
+[node name="PowerUpSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_kgbn0")
+bus = &"coin"
+
+[node name="CoinSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_0t4qr")
+bus = &"coin"
+
+[node name="MainOst" parent="." instance=ExtResource("7_jy27x")]
+autoplay = false
+
+[node name="EndSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_jxnsl")
+bus = &"EndSound"
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BG" type="TextureRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.0
+offset_right = 440.0
+offset_bottom = 679.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_5cspq")
+stretch_mode = 1
+
+[node name="Player" parent="." instance=ExtResource("2_o4etp")]
+
+[node name="GameTimer" type="Timer" parent="."]
+
+[node name="PowerUpTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="HeadsUpDisplay" parent="." instance=ExtResource("4_1rp2s")]
+
+[node name="Obstacles" type="Node" parent="."]
+
+[node name="Cactus" parent="Obstacles" instance=ExtResource("11_o3q8p")]
+position = Vector2(91, 191)
+
+[node name="Cactus2" parent="Obstacles" instance=ExtResource("11_o3q8p")]
+position = Vector2(235, 226)
+
+[node name="Cactus3" parent="Obstacles" instance=ExtResource("11_o3q8p")]
+position = Vector2(387, 475)
+
+[node name="Cactus4" parent="Obstacles" instance=ExtResource("11_o3q8p")]
+position = Vector2(150, 460)
+
+[node name="Cactus6" parent="Obstacles" instance=ExtResource("11_o3q8p")]
+position = Vector2(174, 61)
+
+[node name="Cactus5" parent="Obstacles" instance=ExtResource("11_o3q8p")]
+position = Vector2(267, 590)
+
+[node name="Cactus7" parent="Obstacles" instance=ExtResource("11_o3q8p")]
+position = Vector2(96, 616)
+
+[node name="Cactus8" parent="Obstacles" instance=ExtResource("11_o3q8p")]
+position = Vector2(407, 164)
+
+[node name="EaglesPath" type="Path2D" parent="."]
+position = Vector2(1, -2)
+curve = SubResource("Curve2D_cqgye")
+script = ExtResource("13_bc617")
+eagle_scene = ExtResource("4_vdy5m")
+
+[node name="EaglesSpawnLocation" type="PathFollow2D" parent="EaglesPath"]
+position = Vector2(17, 358)
+rotation = -0.00453512
+rotates = false
+
+[node name="Eagle" parent="EaglesPath/EaglesSpawnLocation" instance=ExtResource("4_vdy5m")]
+position = Vector2(3.03625, -7.98632)
+rotation = 0.0101007
+
+[connection signal="hurt" from="Player" to="." method="_on_player_hurt"]
+[connection signal="pickup" from="Player" to="." method="_on_player_pickup"]
+[connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]
+[connection signal="timeout" from="PowerUpTimer" to="." method="_on_power_up_timer_timeout"]
+[connection signal="start" from="HeadsUpDisplay" to="." method="_on_heads_up_display_start"]

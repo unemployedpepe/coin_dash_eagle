@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://ltgwgc40bl81"]
+
+[ext_resource type="AudioStream" uid="uid://12u3ojmuxvjq" path="res://assets/audio/sb_skyscrapersamba_eq_lessdrums.mp3" id="1_jc3jb"]
+
+[node name="MainOst" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_jc3jb")
+autoplay = true

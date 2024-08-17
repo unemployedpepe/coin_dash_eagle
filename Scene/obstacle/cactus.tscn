@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbrgrpldpkwds"]
+
+[ext_resource type="Script" path="res://Cactus.gd" id="1_guosd"]
+[ext_resource type="Texture2D" uid="uid://dvexxn1nry53h" path="res://assets/cactus.png" id="2_khrto"]
+
+[node name="Cactus" type="Area2D" groups=["obstacle"]]
+script = ExtResource("1_guosd")
+
+[node name="Cactus" type="Sprite2D" parent="."]
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("2_khrto")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(0.62133, 3.57955)
+scale = Vector2(2.01838, 3.12955)
+polygon = PackedVector2Array(-10.2168, -7.85403, 2.38419e-07, -10.3704, 7.6193, -9.77124, 8.88889, -4.81482, 9.10564, 0.134349, 7.77778, 4.81481, 6.13297, 8.44226, 4.15118, 10.0399, 0.187611, 10.0399, -6.66667, 10, -9.44444, 0.74074)
